@@ -1,0 +1,128 @@
+@import url('https://fonts.googleapis.com/css2?family=Jockey+One&display=swap');
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: green;
+    padding: 10px 40px;
+    color: white;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.navbar-logo {
+    font-size: 24px;
+    font-family: 'Jockey One', sans-serif;
+    letter-spacing: 1px;
+    margin-left: 220px;
+}
+
+/* 🔗 Логотип как ссылка */
+.navbar-home-link {
+    color: white;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.navbar-home-link:hover {
+    opacity: 0.8;
+    transform: scale(1.05);
+}
+
+.navbar-links {
+    display: flex;
+    gap: 24px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.navbar-link {
+    color: white;
+    text-decoration: none;
+    font-size: 16px;
+    transition: all 0.3s ease;
+}
+
+.navbar-link:hover {
+    opacity: 0.8;
+    text-decoration: underline;
+}
+
+.cart-btn {
+    background: #ff5900;
+    border: none;
+    padding: 6px 14px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    color: white;
+    margin-right: 220px;
+    transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.cart-btn:hover {
+    background: darkorange;
+    transform: translateY(-2px);
+}
+
+/* 📱 Адаптив */
+@media (max-width: 768px) {
+    .navbar {
+        flex-direction: column;
+        gap: 10px;
+        padding: 14px 20px;
+    }
+
+    .navbar-logo {
+        margin-left: 0;
+    }
+
+    .cart-btn {
+        margin-right: 0;
+    }
+
+    .navbar-links {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+}
+
+/* 🔎 SEARCH BAR */
+.navbar-search {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.navbar-search input {
+    padding: 8px 14px;
+    border-radius: 50px;
+    border: none;
+    outline: none;
+    font-size: 15px;
+    width: 220px;
+    transition: all 0.3s ease;
+}
+
+.navbar-search input:focus {
+    width: 260px;
+    box-shadow: 0 0 8px rgba(255, 255, 255, 0.35);
+}
+
+.navbar-search button {
+    padding: 8px 16px;
+    border-radius: 50px;
+    border: none;
+    background: #ff5900;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.navbar-search button:hover {
+    background: darkorange;
+    transform: translateY(-2px);
+}
