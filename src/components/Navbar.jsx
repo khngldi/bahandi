@@ -1,17 +1,24 @@
 import { Link, useSearchParams, useLocation } from "react-router-dom";
 import "./navbar.css";
+import { useCart } from "../context/cartContext.js";
 import { useState } from "react";
 
 export default function Navbar() {
 
     const location = useLocation();
+    const { cartCount } = useCart();
     const [menuOpen, setMenuOpen] = useState(false);
     const isFoodsPage = location.pathname.startsWith("/foods");
 
     const [searchParams, setSearchParams] = useSearchParams();
     const SearchQuery = searchParams.get("search") || "";
 
-    const [searchFoods, setSearchFoods] = useState(SearchQuery);
+    // A URL/history change resets the draft; ordinary typing stays local.
+    const [draft, setDraft] = useState({ key: location.key, query: SearchQuery, value: SearchQuery });
+    const searchFoods = draft.key === location.key && draft.query === SearchQuery ? draft.value : SearchQuery;
+    if (draft.key !== location.key || draft.query !== SearchQuery) {
+        setDraft({ key: location.key, query: SearchQuery, value: SearchQuery });
+    }
 
     const handleSearch = (e) => {
         e.preventDefault();
@@ -24,7 +31,7 @@ export default function Navbar() {
             newParams.delete("search");
         }
 
-        setSearchParams(newParams, { replace: true });
+        setSearchParams(newParams);
     };
 
     const type = searchParams.get("type");
@@ -47,16 +54,15 @@ export default function Navbar() {
                     {isFoodsPage && (
                         <form onSubmit={handleSearch} className="navbar-search" role="search">
                             <label className="sr-only" htmlFor="menu-search">Поиск по меню</label>
-                            <input id="menu-search" type="search" placeholder="Найти в меню…" value={searchFoods} onChange={(e) => setSearchFoods(e.target.value)} />
+                            <input id="menu-search" type="search" placeholder="Найти в меню…" value={searchFoods} onChange={(e) => setDraft({ key: location.key, query: SearchQuery, value: e.target.value })} />
                             <button type="submit">Найти</button>
                         </form>
                     )}
                 </div>
-                {location.pathname === "/foods" ? (
-                    <a className="cart-btn button button-orange" href="#cart" onClick={() => setMenuOpen(false)}>Корзина ↗</a>
-                ) : (
-                    <Link className="cart-btn button button-orange" to="/foods#cart" onClick={() => setMenuOpen(false)}>Корзина ↗</Link>
-                )}
+                <Link className="cart-btn button button-orange" to={{ pathname: "/foods", search: location.pathname === "/foods" ? location.search : "", hash: "#cart" }}
+                    aria-label={`Корзина${cartCount ? `, товаров: ${cartCount}` : ", пуста"}`} onClick={() => setMenuOpen(false)}>
+                    Корзина {cartCount > 0 && <span className="cart-badge" aria-hidden="true">{cartCount}</span>} <span aria-hidden="true">↗</span>
+                </Link>
             </nav>
         </header>
     );

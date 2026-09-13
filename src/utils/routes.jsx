@@ -1,3 +1,4 @@
+import NotFoundPage from "../pages/NotFoundPage.jsx";
 import Home from "../pages/Home.jsx";
 import Foods from "../pages/Foods.jsx";
 import FoodDetailPage from "../components/FoodsDetailPage.jsx";
@@ -12,4 +13,5 @@ export const routes = [
     { path: HOME_PAGE_ROUTE, element: Home },
     { path: FOODS_PAGE_ROUTE, element: Foods },
     { path: FOOD_DETAIL_ROUTE, element: FoodDetailPage },
+    { path: "*", element: NotFoundPage },
 ];

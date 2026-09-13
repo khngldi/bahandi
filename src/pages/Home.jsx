@@ -1,39 +1,13 @@
-import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import axios from "axios";
+import { useApiResource } from "../hooks/useApiResource.js";
+import ApiError from "../components/ApiError.jsx";
 import "../components/home.css";
 import HomeCard from "../components/HomeCard.jsx";
 
 export default function Home() {
-    const [cards, setCards] = useState([]);
-    const [isLoading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
-
-    useEffect(() => {
-        async function fetchCards() {
-            try {
-                const res = await axios.get("https://8793bad894280e6b.mokky.dev/homecards");
-                setCards(res.data);
-            } catch (err) {
-                console.error(err);
-                setError("Ошибка при загрузке карточек");
-            } finally {
-                setLoading(false);
-            }
-        }
-
-        fetchCards();
-    }, []);
-
-
-    if (error)
-        return (
-            <div className="error-container">
-                <img src="/images/error-icon.jpg" alt="Ошибка" className="error-img" />
-                <h2 className="error-text">{error}</h2>
-                <p className="error-sub">Попробуйте обновить страницу позже.</p>
-            </div>
-        );
+    const { data, isLoading, error, retry } = useApiResource("/homecards");
+    const cards = (data || []).filter(card => card && typeof card.title === "string" && typeof card.link === "string");
+    if (error) return <ApiError message={error} onRetry={retry} />;
 
     return (
         <div className="home-page container">

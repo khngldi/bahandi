@@ -50,3 +50,29 @@ img { display: block; max-width: 100%; }
 .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 @media (max-width: 600px) { .container { width: calc(100% - 32px); } .section-heading { align-items: start; flex-direction: column; gap: var(--space-2); } }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; } }
+
+/* Controls added for the client cart and demo checkout. */
+button:disabled { opacity: .55; cursor: not-allowed; }
+button.text-link { background: transparent; }
+.retry-button { margin-top: var(--space-5); }
+.form-actions { display: flex; flex-wrap: wrap; gap: var(--space-3); margin-top: var(--space-5); }
+.field-error { color: var(--danger); font-size: 13px; }
+.cart-badge { min-width: 22px; padding-inline: 5px; border-radius: var(--radius-sm); background: rgb(255 255 255 / 18%); font-size: 12px; }
+.buy-btn.is-added { background: var(--green); }
+.cart-items .cart-item { display: flex; flex-direction: column; gap: 8px; }
+.cart-item-name { font-weight: 650; }
+.quantity-controls { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; }
+.quantity-controls button { min-width: 36px; min-height: 36px; padding: 6px; border-radius: var(--radius-sm); background: var(--green-soft); color: var(--green); }
+.quantity-controls .remove-item { margin-left: auto; color: var(--danger); background: transparent; font-size: 12px; }
+.checkout-trigger { width: 100%; margin-top: 8px; }
+.checkout-form { display: flex; flex-direction: column; gap: 10px; margin-top: 24px; padding-top: 20px; border-top: 1px solid var(--border); font-size: 13px; }
+.checkout-form input:not([type="checkbox"]), .checkout-form textarea, .checkout-form select { width: 100%; min-width: 0; padding: 10px; font: inherit; border: 1px solid var(--border); border-radius: var(--radius-sm); background: var(--bg); color: var(--ink); }
+.checkout-form textarea { resize: vertical; }
+.checkout-form [aria-invalid="true"] { border-color: var(--danger); }
+.confirmation-label { display: flex; gap: 8px; align-items: start; }
+.confirmation-label input { margin-top: 5px; accent-color: var(--green); }
+.order-summary ul { padding-left: 16px; overflow-wrap: anywhere; }
+.order-summary h4 { margin: 8px 0; }
+.detail-copy > .buy-btn { display: flex; margin-top: 16px; }
+.drinks-grid > .error-container { grid-column: 1 / -1; width: 100%; margin: 0; }
+@media (max-width: 400px) { .navbar-inner { gap: 6px; } .navbar-logo { font-size: 28px; } .cart-btn { gap: 6px; padding-inline: 10px; } }
