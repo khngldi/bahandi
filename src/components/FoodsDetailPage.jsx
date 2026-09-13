@@ -108,22 +108,30 @@ export default function FoodsDetailPage() {
 
     return (
         <div className="detail-page">
+            <Link to={location.state?.from || "/foods"} className="detail-breadcrumb">← Назад в меню</Link>
+            <div className="detail-product">
+            <div className="detail-image-wrap"><img src={food.image} alt={food.name} className="detail-img" /></div>
+            <div className="detail-copy">
+            <p className="eyebrow">Меню BAHANDI</p>
             <h1 className="detail-title">{food.name}</h1>
-            <img src={food.image} alt={food.name} className="detail-img" />
-            <p className="detail-text">
+            {food.description && <p className="detail-text">{food.description}</p>}
+            <p className="detail-price">
                 <span>Цена:</span> {food.price} ₸
             </p>
             <Link
                 to={location.state?.from || "/foods"}
                 className="back-btn"
             >
-                Назад
+                Вернуться к выбору
             </Link>
 
+            </div>
+            </div>
+            <div className="detail-discussion">
             <form onSubmit={SubmitComment} className="comment-form">
                 <label htmlFor="comment" className="comment-label">Оставьте комментарий</label>
-                <input
-                    type="text"
+                <textarea
+                    rows={3}
                     id="comment"
                     name="comment"
                     className="comment-input"
@@ -140,10 +148,10 @@ export default function FoodsDetailPage() {
                 </button>
             </form>
 
-            {submitMessage && <p className="comment-message">{submitMessage}</p>}
+            {submitMessage && <p className={`comment-message${submitMessage.includes('Ошибка') || submitMessage.includes('не может') ? ' is-error' : ''}`} role="status">{submitMessage}</p>}
 
             <div className="comments-section">
-                <h3 className="comments-title">Комментарии:</h3>
+                <h2 className="comments-title">Комментарии <span>({comments.length})</span></h2>
 
                 {comments.length > 0 ? (
                     comments.map((comment) => (
@@ -155,8 +163,9 @@ export default function FoodsDetailPage() {
                         </div>
                     ))
                 ) : (
-                    <p className="no-comments">Пока нет комментариев</p>
+                    <p className="no-comments">Пока нет комментариев. Поделитесь первым впечатлением.</p>
                 )}
+            </div>
             </div>
         </div>
     );

@@ -10,14 +10,11 @@ export default function HomeCard({ card }) {
     return (
         <Link to={`${link}${search}`} key={id} className="home-card">
             <img src={image} alt={title} className="home-card-img" />
-            <h3
-                className={`home-card-title ${
-                    title.toLowerCase().includes("drink") ? "drinks-title" : "chicken-title"
-                }`}
-            >
-                {title}
-            </h3>
-            <p className="home-card-desc">{description}</p>
+            <div>
+                <h3 className="home-card-title">{title}</h3>
+                <p className="home-card-desc">{description}</p>
+                <span className="home-card-arrow">Выбрать <span aria-hidden="true">→</span></span>
+            </div>
         </Link>
     );
 }

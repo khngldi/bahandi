@@ -6,8 +6,9 @@ import AppRoute from "./components/AppRoute";
 function App() {
     return (
         <Router>
+            <a className="skip-link" href="#main-content">Перейти к содержимому</a>
             <Navbar />
-            <AppRoute />
+            <main id="main-content"><AppRoute /></main>
             <Footer />
         </Router>
     );

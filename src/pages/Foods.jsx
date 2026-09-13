@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import '../components/array.css';
 import axios from "axios";
 import LoadingFoods from '../components/LoadingFoods.jsx';
@@ -88,22 +88,30 @@ export default function Foods() {
     }
 
     return (
-        <div className="drinks-page">
-
-            <h2>Корзина: {cart.reduce((s, i) => s + i.quantity, 0)} шт</h2>
-            <p>Общая сумма: {cart.reduce((t, i) => t + i.price * i.quantity, 0)} ₸</p>
-
-            <h1 className="title">
-                {typeFilter === "drink" && "Напитки"}
-                {typeFilter === "chicken" && "Курица"}
-                {!typeFilter && "Все продукты"}
-            </h1>
-
-            <div className="drinks-grid">
+        <div className="drinks-page container">
+            <div className="menu-heading"><div>
+                <p className="eyebrow">BAHANDI / Меню</p>
+                <h1 className="title">
+                    {typeFilter === "drink" && "Напитки"}
+                    {typeFilter === "chicken" && "Бургеры с курицей"}
+                    {!typeFilter && "Наше меню"}
+                </h1>
+                <p>Выберите блюдо — добавьте к нему любимый напиток.</p>
+            </div></div>
+            <nav className="menu-tabs" aria-label="Категории меню">
+                {[{ label: "Всё меню", type: null }, { label: "Бургеры", type: "chicken" }, { label: "Напитки", type: "drink" }].map(item => {
+                    const next = new URLSearchParams(location.search);
+                    if (item.type) next.set("type", item.type); else next.delete("type");
+                    return <Link key={item.label} to={`/foods?${next}`} className={`menu-tab${typeFilter === item.type ? " active" : ""}`} aria-current={typeFilter === item.type ? "page" : undefined}>{item.label}</Link>;
+                })}
+            </nav>
+            <div className="menu-layout">
+            <div className="drinks-grid" aria-busy={isLoading}>
+                {isLoading && <span className="sr-only" role="status">Загрузка блюд</span>}
                 {isLoading ? (
                     Array.from({ length: 8 }).map((_, i) => <LoadingFoods key={i} />)
                 ) : (
-                    processedFoods.map(food => (
+                    processedFoods.length === 0 ? <div className="empty-state"><h2>Блюда не найдены</h2><p>{searchFilter ? "Попробуйте изменить поисковый запрос." : "В этой категории пока нет блюд."}</p><Link className="text-link" to="/foods">Показать всё меню →</Link></div> : processedFoods.map(food => (
                         <FoodsCard
                             key={food.id}
                             product={food}
@@ -111,6 +119,13 @@ export default function Foods() {
                         />
                     ))
                 )}
+            </div>
+            <aside className="cart-panel" id="cart" tabIndex="-1" aria-labelledby="cart-title">
+                <h2 id="cart-title">Ваша корзина</h2>
+                <p className="cart-count" role="status">Блюд в корзине: {cart.reduce((s, i) => s + i.quantity, 0)}</p>
+                {cart.length ? <ul className="cart-items">{cart.map(item => <li key={item.id}><span>{item.name}<br /><small>{item.quantity} шт.</small></span><b>{item.price * item.quantity} ₸</b></li>)}</ul> : <p className="cart-note">Добавьте что-нибудь из меню.</p>}
+                <p className="cart-total"><span>Общая сумма</span><strong>{cart.reduce((t, i) => t + i.price * i.quantity, 0)} ₸</strong></p>
+            </aside>
             </div>
         </div>
     );
